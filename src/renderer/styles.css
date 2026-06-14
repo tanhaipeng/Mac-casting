@@ -3,6 +3,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: #111418;
   color: #eef1f4;
+  --player-control-safe-area: 52px;
 }
 
 * {
@@ -25,6 +26,11 @@ body {
   overflow: hidden;
 }
 
+.shell.is-playing,
+.shell.is-video-fullscreen {
+  grid-template-rows: minmax(0, 1fr);
+}
+
 .stage {
   position: relative;
   display: grid;
@@ -33,6 +39,16 @@ body {
   background:
     linear-gradient(135deg, rgba(54, 68, 78, 0.45), transparent 38%),
     #111418;
+}
+
+.shell.is-playing .stage {
+  align-items: start;
+  padding-bottom: var(--player-control-safe-area);
+  background: #050607;
+}
+
+.shell.is-video-fullscreen .stage {
+  padding-bottom: 0;
 }
 
 video {
@@ -45,6 +61,20 @@ video {
 
 video.is-visible {
   display: block;
+}
+
+.shell.is-playing video.is-visible {
+  height: calc(100vh - var(--player-control-safe-area));
+}
+
+.shell.is-video-fullscreen video.is-visible {
+  height: 100vh;
+}
+
+video:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
 }
 
 .empty-state {
@@ -98,6 +128,11 @@ p {
   background: #181d22;
   color: #aab3bd;
   font-size: 13px;
+}
+
+.shell.is-playing .status-bar,
+.shell.is-video-fullscreen .status-bar {
+  display: none;
 }
 
 .status-bar span {

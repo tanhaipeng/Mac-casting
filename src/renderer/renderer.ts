@@ -30,7 +30,9 @@ type PlaybackSnapshot = {
 interface Window {
   casting: {
     ready(): void;
+    toggleWindowFullscreen(): void;
     onCommand(callback: (command: DlnaCommand) => void): void;
+    onWindowFullscreen(callback: (fullscreen: boolean) => void): void;
     onStatus(callback: (status: DlnaStatus) => void): void;
     onLog(callback: (entry: DlnaLogEntry) => void): void;
     sendPlaybackState(snapshot: PlaybackSnapshot): void;
@@ -38,6 +40,7 @@ interface Window {
 }
 
 const player = queryRequired<HTMLVideoElement>("#player");
+const shell = queryRequired<HTMLElement>("#shell");
 const emptyState = queryRequired<HTMLDivElement>("#emptyState");
 const statusEl = queryRequired<HTMLParagraphElement>("#status");
 const deviceName = queryRequired<HTMLSpanElement>("#deviceName");
@@ -60,6 +63,7 @@ let logExpanded = false;
 
 function showPlayer(show: boolean) {
   player.classList.toggle("is-visible", show);
+  shell.classList.toggle("is-playing", show);
   emptyState.classList.toggle("is-hidden", show);
 }
 
@@ -113,6 +117,18 @@ function setLogExpanded(expanded: boolean) {
   logExpanded = expanded;
   logPanel.classList.toggle("is-hidden", !expanded);
   logToggle.setAttribute("aria-expanded", String(expanded));
+}
+
+function toggleWindowFullscreen() {
+  if (!currentUri) {
+    return;
+  }
+
+  window.casting.toggleWindowFullscreen();
+}
+
+function syncVideoFullscreenState() {
+  shell.classList.toggle("is-video-fullscreen", document.fullscreenElement === player);
 }
 
 window.casting.onStatus((nextStatus) => {
@@ -173,6 +189,9 @@ window.casting.onCommand((command) => {
 });
 
 player.addEventListener("play", sendSnapshot);
+player.addEventListener("dblclick", () => {
+  toggleWindowFullscreen();
+});
 player.addEventListener("pause", sendSnapshot);
 player.addEventListener("ended", sendSnapshot);
 player.addEventListener("timeupdate", sendSnapshot);
@@ -202,10 +221,15 @@ player.addEventListener("error", () => {
 });
 
 window.casting.onLog(appendLog);
+window.casting.onWindowFullscreen((fullscreen) => {
+  shell.classList.toggle("is-window-fullscreen", fullscreen);
+});
 document.addEventListener("keydown", (event) => {
   if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.key.toLowerCase() === "l") {
     event.preventDefault();
     setLogExpanded(!logExpanded);
   }
 });
+document.addEventListener("fullscreenchange", syncVideoFullscreenState);
+syncVideoFullscreenState();
 window.casting.ready();

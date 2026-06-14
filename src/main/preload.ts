@@ -5,8 +5,14 @@ contextBridge.exposeInMainWorld("casting", {
   ready() {
     ipcRenderer.send("renderer-ready");
   },
+  toggleWindowFullscreen() {
+    ipcRenderer.send("toggle-window-fullscreen");
+  },
   onCommand(callback: (command: DlnaCommand) => void) {
     ipcRenderer.on("dlna-command", (_event, command: DlnaCommand) => callback(command));
+  },
+  onWindowFullscreen(callback: (fullscreen: boolean) => void) {
+    ipcRenderer.on("window-fullscreen", (_event, fullscreen: boolean) => callback(fullscreen));
   },
   onStatus(callback: (status: DlnaStatus) => void) {
     ipcRenderer.on("dlna-status", (_event, status: DlnaStatus) => callback(status));

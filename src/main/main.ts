@@ -33,6 +33,14 @@ function createWindow() {
     rendererReady = false;
   });
 
+  mainWindow.on("enter-full-screen", () => {
+    sendToRenderer("window-fullscreen", true);
+  });
+
+  mainWindow.on("leave-full-screen", () => {
+    sendToRenderer("window-fullscreen", false);
+  });
+
   mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
 }
 
@@ -86,6 +94,8 @@ function flushRendererState() {
       mainWindow.webContents.send("dlna-command", command);
     }
   }
+
+  mainWindow.webContents.send("window-fullscreen", mainWindow.isFullScreen());
 }
 
 function getPersistentUuid() {
@@ -133,6 +143,14 @@ ipcMain.on("renderer-ready", () => {
   rendererReady = true;
   console.log("[IPC] renderer ready");
   flushRendererState();
+});
+
+ipcMain.on("toggle-window-fullscreen", () => {
+  if (!mainWindow || mainWindow.webContents.isDestroyed()) {
+    return;
+  }
+
+  mainWindow.setFullScreen(!mainWindow.isFullScreen());
 });
 
 app.on("before-quit", () => {
