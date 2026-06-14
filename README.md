@@ -6,15 +6,56 @@
 
 ```bash
 npm install
-npm run build
 npm start
 ```
+
+`npm start` 会先编译再启动 Electron。
 
 如果 Electron 下载很慢，可以使用镜像源：
 
 ```bash
 ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ npm install
 ```
+
+## 打包
+
+生成本机 macOS `.app`：
+
+```bash
+npm run package:mac
+```
+
+生成 macOS `.dmg` 安装包：
+
+```bash
+npm run dist:mac
+```
+
+产物会输出到 `release/`。本项目未配置 Apple 开发者签名，打包时会跳过代码签名。
+
+## GitHub CI
+
+仓库包含 GitHub Actions 工作流：
+
+```text
+.github/workflows/build-mac.yml
+```
+
+触发条件：
+
+- push 到 `main`
+- 向 `main` 发起 Pull Request
+- 手动 `workflow_dispatch`
+
+CI 会在 macOS runner 上执行：
+
+```bash
+npm ci
+npm run typecheck
+npm run dist:mac
+```
+
+构建完成后，`.dmg` 会作为 artifact 上传，名称为 `mac-dlna-casting-dmg`。
 
 ## 手机端使用
 
@@ -25,7 +66,9 @@ ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ npm install
 
 首次运行时，macOS 可能会弹出本地网络访问权限，请允许，否则手机可能搜不到设备。
 
-窗口底部的 `最近请求` 会显示手机端发来的 DLNA 请求：
+调试日志面板默认隐藏。需要排查时，在应用窗口中按 `Cmd+Shift+L` 打开或关闭 `最近请求`。
+
+排查要点：
 
 - 能看到 `SetAVTransportURI`：Mac 已收到视频地址。
 - 能看到 `Play`：手机端已要求播放。

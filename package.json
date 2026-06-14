@@ -7,6 +7,7 @@
   "productName": "Mac DLNA Casting",
   "scripts": {
     "build": "tsc && node scripts/copy-static.mjs",
+    "dist:mac": "npm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac dmg",
     "dev": "npm run build && electron .",
     "package:mac": "npm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac dir",
     "start": "npm run build && electron .",
@@ -19,14 +20,19 @@
       "output": "release"
     },
     "files": [
+      "assets/icon.icns",
       "dist/**/*",
       "package.json"
     ],
     "mac": {
       "category": "public.app-category.video",
+      "icon": "assets/icon.icns",
       "target": [
         "dir"
       ]
+    },
+    "dmg": {
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     }
   },
   "devDependencies": {
