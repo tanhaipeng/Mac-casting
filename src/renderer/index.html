@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mac DLNA Casting</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="stage">
+        <video id="player" controls playsinline></video>
+        <div id="emptyState" class="empty-state">
+          <div class="device-mark">DLNA</div>
+          <h1>Mac DLNA Casting</h1>
+          <p id="status">启动中...</p>
+        </div>
+      </section>
+      <footer class="status-bar">
+        <span id="deviceName">等待设备信息</span>
+        <span id="nowPlaying">暂无视频</span>
+      </footer>
+      <aside id="logPanel" class="log-panel is-hidden" aria-label="DLNA 请求日志">
+        <button id="logToggle" class="log-title" type="button" aria-expanded="false">最近请求</button>
+        <ol id="logList"></ol>
+      </aside>
+    </main>
+    <script src="./renderer.js"></script>
+  </body>
+</html>

@@ -1,0 +1,177 @@
+:root {
+  color-scheme: dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #111418;
+  color: #eef1f4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 720px;
+  min-height: 480px;
+  background: #111418;
+}
+
+.shell {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 44px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  background:
+    linear-gradient(135deg, rgba(54, 68, 78, 0.45), transparent 38%),
+    #111418;
+}
+
+video {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: #050607;
+  object-fit: contain;
+}
+
+video.is-visible {
+  display: block;
+}
+
+.empty-state {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
+  padding: 32px;
+}
+
+.empty-state.is-hidden {
+  display: none;
+}
+
+.device-mark {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border: 1px solid rgba(238, 241, 244, 0.24);
+  border-radius: 8px;
+  color: #7bd3c7;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+p {
+  margin: 0;
+  max-width: 560px;
+  color: #aab3bd;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  padding: 0 16px;
+  border-top: 1px solid rgba(238, 241, 244, 0.12);
+  background: #181d22;
+  color: #aab3bd;
+  font-size: 13px;
+}
+
+.status-bar span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#nowPlaying {
+  text-align: right;
+}
+
+.log-panel {
+  position: absolute;
+  right: 0;
+  bottom: 44px;
+  left: 0;
+  display: block;
+  min-height: 0;
+  padding: 10px 16px 12px;
+  border-top: 1px solid rgba(238, 241, 244, 0.12);
+  background: #0d1013;
+  z-index: 10;
+}
+
+.log-panel.is-hidden {
+  display: none;
+}
+
+.log-title {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  margin: 0 0 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #eef1f4;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+  font-family: inherit;
+}
+
+#logList {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #aab3bd;
+  font-size: 12px;
+}
+
+#logList li {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 12px;
+  min-width: 0;
+}
+
+#logList li.error span {
+  color: #ff9d8f;
+}
+
+#logList li.warn span {
+  color: #f0c56a;
+}
+
+#logList small {
+  min-width: 0;
+  overflow: hidden;
+  color: #75808a;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,38 @@
+{
+  "name": "mac-dlna-casting",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A minimal DLNA renderer for playing phone-cast videos on macOS.",
+  "main": "dist/main/main.js",
+  "productName": "Mac DLNA Casting",
+  "scripts": {
+    "build": "tsc && node scripts/copy-static.mjs",
+    "dev": "npm run build && electron .",
+    "package:mac": "npm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac dir",
+    "start": "npm run build && electron .",
+    "typecheck": "tsc --noEmit"
+  },
+  "build": {
+    "appId": "local.mac-dlna-casting",
+    "productName": "Mac DLNA Casting",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.video",
+      "target": [
+        "dir"
+      ]
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "electron": "^37.0.0",
+    "electron-builder": "^26.15.3",
+    "typescript": "^5.8.0"
+  }
+}
