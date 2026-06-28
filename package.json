@@ -7,7 +7,7 @@
   "productName": "Mac DLNA Casting",
   "scripts": {
     "build": "tsc && node scripts/copy-static.mjs",
-    "dist:mac": "npm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac dmg",
+    "dist:mac": "npm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac dmg --publish never",
     "dev": "npm run build && electron .",
     "package:mac": "npm run build && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac dir",
     "start": "npm run build && electron .",
